@@ -3,14 +3,22 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node src/app.js",
+    "dev": "env-cmd -f ./config/dev.env nodemon src/app.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "description": "",
   "dependencies": {
+    "bcrypt": "^5.1.1",
     "express": "^4.19.2",
-    "mongoose": "^8.3.2"
+    "jsonwebtoken": "^9.0.2",
+    "mongoose": "^8.3.2",
+    "validator": "^13.11.0"
+  },
+  "devDependencies": {
+    "env-cmd": "^10.1.0"
   }
 }
