@@ -1,5 +1,5 @@
 const User = require('../models/user')
-const jwt = require('jsonwebtoken')
+
 const bcrypt = require('bcrypt')
 
 const registerUser = async (req,res) => {
@@ -21,25 +21,19 @@ const registerUser = async (req,res) => {
 const loginUser = async (req,res) => {
    try {
     const {email , password} = req.body
-    const user = await User.findOne({ email })
-    console.log(user);
-    if(!user){
-        res.status(404).send()
-    }
+    const user = await User.findByCredentials(email , password)
 
-    const isMatch = await bcrypt.compare(password , user.password)
+    const token = await user.generateAuthToken()
 
-    if(!isMatch){
-        throw new Error('Invalid Credentials')
-    }
-
-    res.status(200).json({ message: 'Logged in Successfully'})
+    res.status(200).json({ message: 'Logged in Successfully', token})
 
    } catch (e) {
      res.status(500).send()
    }
   
 }
+
+//Add generate auth token method in the User Model
 
 module.exports = {
     registerUser,

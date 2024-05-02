@@ -17,10 +17,8 @@ const expenseSchema = new mongoose.Schema({
         enum: categoryOptions,
         default: 'general'
     },
-    date: {
-        type: Date,
-        default: Date.now()
-    }
+},{
+    timestamps:true
 }) 
 
 const Expense = mongoose.model('Expense',expenseSchema)
