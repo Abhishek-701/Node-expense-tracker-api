@@ -42,12 +42,18 @@ const userSchema = new mongoose.Schema({
     timestamps: true
 })
 
+userSchema.virtual('expenses',{
+    ref:'Expense',
+    localField: '_id' ,
+    foreignField: 'owner'
+})
+
 userSchema.methods.generateAuthToken = async function ()  {
     const user = this
     const token = jwt.sign({ _id : user._id.toString()  } , process.env.JWT_SECRET )
 
 
-    user.token = user.tokens.concat({ token })
+    user.tokens = user.tokens.concat({ token })
     await user.save()
     return token
 }
@@ -71,3 +77,5 @@ userSchema.statics.findByCredentials = async (email, password) => {
 const User =  mongoose.model('User', userSchema)
 
 module.exports = User
+
+//Add logout

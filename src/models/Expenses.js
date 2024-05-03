@@ -17,6 +17,11 @@ const expenseSchema = new mongoose.Schema({
         enum: categoryOptions,
         default: 'general'
     },
+    owner:{
+        type : mongoose.Schema.ObjectId,
+        required: true,
+        ref: 'User'
+    }
 },{
     timestamps:true
 }) 

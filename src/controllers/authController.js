@@ -33,9 +33,41 @@ const loginUser = async (req,res) => {
   
 }
 
-//Add generate auth token method in the User Model
+const logoutUser = async (req,res) => {
+    try {
+        req.user.tokens = req.user.tokens.filter((token) => {
+            return token.token !== req.token
+        })
+        await req.user.save()
+        res.status(200).send()
+    } catch (e) {
+        res.status(500).send()
+    }
+}
+
+const logoutAll = async (req,res) => {
+    try{
+        req.user.tokens = []
+        await req.user.save()
+        res.status(200).send()
+    }catch{
+        res.status(500).send()
+    }
+}
+
+
+const getProfile = async (req,res) => {
+    try {
+        res.status(200).send(req.user)
+    } catch (e) {
+        res.status(500).send()
+    }
+}
 
 module.exports = {
     registerUser,
-    loginUser
+    loginUser,
+    logoutUser,
+    logoutAll,
+    getProfile
 }

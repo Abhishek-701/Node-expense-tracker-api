@@ -4,8 +4,12 @@ const Expense = require('../models/Expenses')
 //Get All Expenses Controller
 const getAllExpenses = async (req,res) => {
     try {
-        const expenses = await Expense.find()
-        res.status(200).json({ expenses })
+        // const expenses = await Expense.find()
+        await req.user.populate({
+            path: 'expenses'
+
+        })
+        res.status(200).send(req.user.expenses)
     } catch (e) {
         res.status(500).json({ error : 'Server Error'})
     }
@@ -26,7 +30,10 @@ const getExpense = async (req, res) => {
 
 const addExpense = async (req,res) => {
     try{
-        const expense = req.body
+        const expense = {
+            ...req.body,
+            owner: req.user._id
+        }
         await Expense.create(expense)
         res.status(201).json({ expense })
     }catch(e){
